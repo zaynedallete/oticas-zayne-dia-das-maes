@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Você Ganhou! — Óticas Zayne</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold:       #C9A84C;
+      --gold-light: #E5C46A;
+      --dark:       #111111;
+      --dark2:      #1C1C1C;
+      --white:      #FFFFFF;
+    }
+
+    body {
+      background-color: var(--dark);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    /* Dot grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(201,168,76,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60vh;
+      background: radial-gradient(ellipse at 50% -5%, rgba(201,168,76,0.16) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    header, .content, footer { position: relative; z-index: 1; }
+
+    /* ── HEADER ── */
+    header {
+      width: 100%;
+      padding: 18px 24px;
+      text-align: center;
+      border-bottom: 1px solid rgba(201,168,76,0.18);
+      backdrop-filter: blur(8px);
+      background: rgba(17,17,17,0.6);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo { height: 40px; object-fit: contain; }
+
+    /* ── CONTEÚDO ── */
+    .content {
+      width: 100%;
+      max-width: 540px;
+      padding: 44px 22px 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 24px;
+    }
+
+    /* ── TROFÉU ── */
+    .trophy {
+      font-size: 5rem;
+      line-height: 1;
+      animation: trophy-anim 1.2s ease-in-out infinite alternate,
+                 fadeDown 0.6s ease both;
+      filter: drop-shadow(0 0 20px rgba(201,168,76,0.6));
+    }
+    @keyframes trophy-anim {
+      from { transform: translateY(0) rotate(-4deg) scale(1); }
+      to   { transform: translateY(-16px) rotate(4deg) scale(1.06); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── TÍTULO ── */
+    .parabens {
+      font-size: clamp(2rem, 7vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .parabens span {
+      display: block;
+      background: linear-gradient(90deg, #B8960C, #E5C46A, #C9A84C, #E5C46A, #B8960C);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer-text 3s linear infinite;
+    }
+    @keyframes shimmer-text {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── CARD DO PRÊMIO — Yield Card style ── */
+    .prize-card {
+      position: relative;
+      width: 100%;
+      border-radius: 24px;
+      padding: 2px; /* espaço para o gradient border */
+      background: linear-gradient(135deg, #C9A84C, #6B5420, #C9A84C);
+      animation: fadeUp 0.6s 0.2s ease both, card-glow 2.8s ease-in-out infinite alternate;
+    }
+    @keyframes card-glow {
+      from { box-shadow: 0 0 20px rgba(201,168,76,0.2); }
+      to   { box-shadow: 0 0 60px rgba(201,168,76,0.45); }
+    }
+    .prize-inner {
+      background: linear-gradient(135deg, #1A1500, #1C1C1C, #141000);
+      border-radius: 22px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Reflexo interno */
+    .prize-inner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 40%;
+      background: linear-gradient(180deg, rgba(201,168,76,0.06), transparent);
+      border-radius: 22px 22px 0 0;
+    }
+    .prize-label {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .prize-value {
+      font-size: clamp(1.8rem, 5.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+      position: relative;
+      text-shadow: 0 0 40px rgba(201,168,76,0.4);
+    }
+    .prize-desc {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 10px;
+      position: relative;
+    }
+
+    /* ── FRASE ── */
+    .frase-section {
+      width: 100%;
+      padding: 16px 20px;
+      border-left: 3px solid var(--gold);
+      background: rgba(201,168,76,0.04);
+      border-radius: 0 12px 12px 0;
+      text-align: left;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .frase-label {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 5px;
+    }
+    .frase-text {
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* ── INSTRUÇÕES — receipt style ── */
+    .instructions {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 18px 22px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      animation: fadeUp 0.6s 0.4s ease both;
+      /* traço pontilhado no topo, estilo recibo */
+      border-top: 1px dashed rgba(201,168,76,0.25);
+    }
+    .instructions strong { color: var(--white); }
+    .instructions .validade-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 6px;
+      padding: 1px 8px;
+      font-size: 0.8rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    /* ── LOJA ── */
+    .loja-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      color: var(--gold-light);
+      font-weight: 600;
+      animation: fadeUp 0.6s 0.45s ease both;
+    }
+
+    /* ── BOTÃO WHATSAPP ── */
+    .btn-whatsapp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: linear-gradient(135deg, #1DA851, #25D366, #1DA851);
+      background-size: 200% auto;
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(0.92rem, 2.5vw, 1.05rem);
+      font-weight: 700;
+      padding: 20px 24px;
+      border: none;
+      border-radius: 50px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-position 0.4s ease, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 28px rgba(37,211,102,0.35);
+      animation: fadeUp 0.6s 0.5s ease both, wa-pulse 2.6s ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-whatsapp::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+    .btn-whatsapp:hover::after { transform: translateX(100%); }
+    @keyframes wa-pulse {
+      0%, 100% { box-shadow: 0 8px 28px rgba(37,211,102,0.35); }
+      50%       { box-shadow: 0 12px 48px rgba(37,211,102,0.6), 0 0 0 8px rgba(37,211,102,0.1); }
+    }
+    .btn-whatsapp:hover {
+      background-position: right center;
+      transform: scale(1.03) translateY(-2px);
+      animation: none;
+      box-shadow: 0 14px 40px rgba(37,211,102,0.55);
+    }
+    .btn-whatsapp:active { transform: scale(0.97); }
+    .btn-whatsapp svg { width: 22px; height: 22px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: auto;
+      padding: 14px;
+      color: rgba(255,255,255,0.15);
+      font-size: 0.72rem;
+      text-align: center;
+      border-top: 1px solid rgba(201,168,76,0.08);
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="PNG - SITE.png" alt="Óticas Zayne" class="logo">
+</header>
+
+<div class="content">
+  <div class="trophy">🏆</div>
+
+  <h1 class="parabens">
+    Parabéns!<span>Você Ganhou!</span>
+  </h1>
+
+  <div class="prize-card">
+    <div class="prize-inner">
+      <div class="prize-label">✦ Seu prêmio especial ✦</div>
+      <div class="prize-value" id="prizeValue">—</div>
+      <div class="prize-desc" id="prizeDesc">—</div>
+    </div>
+  </div>
+
+  <div class="frase-section">
+    <div class="frase-label">Frase da sua mãe 💛</div>
+    <div class="frase-text" id="fraseTexto">—</div>
+  </div>
+
+  <div class="instructions">
+    📍 <strong>Mostre esta tela na loja</strong> e resgate seu prêmio.<br>
+    Válido até <span class="validade-badge" id="validade">—</span> · Sujeito à disponibilidade de estoque.
+  </div>
+
+  <div class="loja-badge" id="lojaBadge">📍 <span id="lojaNomeExibido">—</span></div>
+
+  <a class="btn-whatsapp" id="btnWhatsapp" href="#" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    CLIQUE PARA GARANTIR SEU PRÊMIO
+  </a>
+</div>
+
+<footer>Óticas Zayne · Dia das Mães 2026 · Promoção válida nas lojas participantes</footer>
+
+<script>
+  /* ── GUARD ── */
+  const premio       = sessionStorage.getItem('premio');
+  const frase        = sessionStorage.getItem('frase');
+  const lojaWhatsapp = sessionStorage.getItem('lojaWhatsapp');
+  const lojaNome     = sessionStorage.getItem('lojaNome');
+  if (!premio || !frase || !lojaWhatsapp) { window.location.href = 'index.html'; }
+
+  /* ── PRÊMIO ── */
+  const partes = premio.split(' em ');
+  document.getElementById('prizeValue').textContent = partes[0] || premio;
+  document.getElementById('prizeDesc').textContent  = partes[1] ? `em ${partes[1]}` : '';
+
+  /* ── FRASE ── */
+  document.getElementById('fraseTexto').textContent = `"${frase}"`;
+
+  /* ── LOJA ── */
+  document.getElementById('lojaNomeExibido').textContent = lojaNome || '—';
+
+  /* ── VALIDADE (hoje + 10 dias) ── */
+  const v = new Date();
+  v.setDate(v.getDate() + 10);
+  document.getElementById('validade').textContent =
+    v.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+  /* ── WHATSAPP ── */
+  const msg     = `Olá! Participei da promoção Dia das Mães da Ótica Zayne e ganhei: *${premio}*. Minha frase favorita foi: _"${frase}"_. Quero garantir meu prêmio! 🎁`;
+  document.getElementById('btnWhatsapp').href =
+    `https://wa.me/${lojaWhatsapp}?text=${encodeURIComponent(msg)}`;
+
+  /* ── CONFETTI ── */
+  const colors = ['#C9A84C','#E5C46A','#FFFFFF','#FFD700','#FFF8DC','#F5C842'];
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      confetti({ particleCount: 140, spread: 75, origin: { y: 0.4 }, colors });
+      setTimeout(() => {
+        confetti({ particleCount: 80, angle: 60,  spread: 65, origin: { x: 0,   y: 0.55 }, colors });
+        confetti({ particleCount: 80, angle: 120, spread: 65, origin: { x: 1,   y: 0.55 }, colors });
+      }, 350);
+      setTimeout(() => {
+        confetti({ particleCount: 60, spread: 100, origin: { y: 0.25 }, colors, scalar: 1.3, gravity: 0.6 });
+      }, 900);
+    }, 250);
+  });
+</script>
+
+</body>
+</html>
