@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dia das Mães — Óticas Zayne</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold:       #C9A84C;
+      --gold-light: #E5C46A;
+      --dark:       #111111;
+      --dark2:      #1C1C1C;
+      --white:      #FFFFFF;
+    }
+
+    body {
+      background-color: var(--dark);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(201,168,76,0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 50vh;
+      background: radial-gradient(ellipse at 50% -10%, rgba(201,168,76,0.14) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    header, main, footer { position: relative; z-index: 1; }
+
+    /* ── HEADER ── */
+    header {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(201,168,76,0.18);
+      backdrop-filter: blur(8px);
+      background: rgba(17,17,17,0.6);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo { height: 40px; object-fit: contain; }
+    .modo-loja {
+      font-size: 0.7rem;
+      color: rgba(201,168,76,0.6);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 20px;
+      padding: 4px 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 44px 20px 24px;
+    }
+    .badge {
+      position: relative;
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 30px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: linear-gradient(90deg, #B8960C, #E5C46A, #C9A84C, #E5C46A, #B8960C);
+      background-size: 250% auto;
+      animation: shimmer 3.5s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 250% center; }
+    }
+    .hero-divider {
+      width: 56px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 16px auto 18px;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero p {
+      color: rgba(255,255,255,0.5);
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 28px 16px 60px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    @media (min-width: 600px) {
+      .grid { grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 32px 24px 72px; }
+    }
+    @media (min-width: 860px) {
+      .grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--dark2);
+      color: rgba(255,255,255,0.85);
+      border-radius: 16px;
+      padding: 20px 16px;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid rgba(201,168,76,0.18);
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      transition: transform 0.26s cubic-bezier(.34,1.56,.64,1),
+                  box-shadow 0.26s ease,
+                  border-color 0.26s ease,
+                  background 0.26s ease;
+      -webkit-tap-highlight-color: transparent;
+      appearance: none;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(201,168,76,0.12), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .card .corner { display: none; }
+    .card:hover .corner, .card:focus .corner { display: block; }
+    .card .corner {
+      position: absolute; width: 7px; height: 7px;
+      background: var(--gold); z-index: 2;
+    }
+    .card .corner.tl { top: -3px; left: -3px; }
+    .card .corner.tr { top: -3px; right: -3px; }
+    .card .corner.bl { bottom: -3px; left: -3px; }
+    .card .corner.br { bottom: -3px; right: -3px; }
+
+    .card:hover, .card:focus {
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--gold);
+      background: linear-gradient(135deg, #221C06, #1C1C1C);
+      box-shadow: 0 16px 40px rgba(201,168,76,0.28),
+                  0 0 0 1px rgba(201,168,76,0.4),
+                  inset 0 1px 0 rgba(201,168,76,0.15);
+      outline: none;
+      color: var(--white);
+    }
+    .card:hover::before { opacity: 1; }
+    .card:active { transform: translateY(-2px) scale(0.98); }
+
+    .card-emoji { font-size: 1.8rem; margin-bottom: 8px; line-height: 1; }
+    .card-text  { font-size: clamp(0.78rem, 1.6vw, 0.9rem); font-weight: 600; line-height: 1.4; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 14px;
+      color: rgba(255,255,255,0.18);
+      font-size: 0.7rem;
+      border-top: 1px solid rgba(201,168,76,0.08);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="../PNG - SITE.png" alt="Óticas Zayne" class="logo">
+  <span class="modo-loja">🏪 Modo Loja</span>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="badge">🌷 Dia das Mães 2026</div>
+    <h1>Qual frase a sua mãe<br><em>mais fala?</em></h1>
+    <div class="hero-divider"></div>
+    <p>Escolha uma frase e gire a roleta para ganhar seu prêmio! 🎁</p>
+  </section>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  Óticas Zayne · Dia das Mães 2026 · Uso interno<br>
+  <span style="opacity:.55">*Descontos válidos para pagamentos à vista ou no cartão. Não cumulativo com outras promoções.</span>
+</footer>
+
+<script>
+  // Limpa sessão do modo loja-02 (chaves prefixadas loja2_)
+  sessionStorage.removeItem('loja2_frase');
+  sessionStorage.removeItem('loja2_premio');
+  sessionStorage.removeItem('loja2_jaGirou');
+
+  const FRASES = [
+    ['😤','Você não é todo mundo…'],
+    ['🔍','Se eu for aí e achar…'],
+    ['🚫','Não vai, eu já disse…'],
+    ['📱','Me avisa quando chegar…'],
+    ['❤️','Eu te amo filho(a)'],
+    ['👟','Não corre não que a pisa é maior…'],
+    ['🏠','Enquanto morar debaixo do meu teto…'],
+    ['🛒','Na volta a gente compra…'],
+    ['🌟','Tenho orgulho de você…'],
+    ['💛','Eu só quero seu bem…'],
+    ['🙄','Eu avisei, mais não me escuta…'],
+    ['✋','Se eu contar até três…'],
+    ['📺','Sai de perto dessa TV que estraga as vista…'],
+    ['🌆','Só vive na rua, parece que não tem casa…'],
+    ['😬','Quando chegar em casa a gente conversa…'],
+    ['🙏','Vai com Deus, Deus te proteja…'],
+  ];
+
+  const grid = document.getElementById('grid');
+  FRASES.forEach(([emoji, texto], i) => {
+    const btn = document.createElement('button');
+    btn.className = 'card';
+    btn.style.animationDelay = `${i * 45}ms`;
+    btn.innerHTML = `
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <span class="card-emoji">${emoji}</span>
+      <span class="card-text">${texto}</span>`;
+    btn.addEventListener('click', () => {
+      sessionStorage.setItem('loja2_frase', texto);
+      window.location.href = '/loja-02/roleta.html';
+    });
+    grid.appendChild(btn);
+  });
+</script>
+
+</body>
+</html>

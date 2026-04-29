@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prêmio Ganho — Óticas Zayne</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --gold: #C9A84C; --gold-light: #E5C46A;
+      --dark: #111111; --dark2: #1C1C1C; --white: #FFFFFF;
+    }
+    body {
+      background-color: var(--dark);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      position: relative; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: radial-gradient(rgba(201,168,76,0.06) 1px, transparent 1px);
+      background-size: 28px 28px; pointer-events: none; z-index: 0;
+    }
+    body::after {
+      content: ''; position: fixed; top: 0; left: 0; right: 0; height: 60vh;
+      background: radial-gradient(ellipse at 50% -5%, rgba(201,168,76,0.16) 0%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+    header, .content, footer { position: relative; z-index: 1; }
+
+    header {
+      width: 100%; padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(201,168,76,0.18);
+      backdrop-filter: blur(8px); background: rgba(17,17,17,0.6);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo { height: 38px; object-fit: contain; }
+    .modo-loja {
+      font-size: 0.7rem; color: rgba(201,168,76,0.6);
+      border: 1px solid rgba(201,168,76,0.25); border-radius: 20px;
+      padding: 4px 12px; letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .content {
+      width: 100%; max-width: 580px;
+      padding: 40px 22px 60px;
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center; gap: 24px;
+    }
+
+    /* ── TROFÉU ── */
+    .trophy {
+      font-size: 5.5rem; line-height: 1;
+      animation: trophy-anim 1.2s ease-in-out infinite alternate, fadeDown 0.6s ease both;
+      filter: drop-shadow(0 0 24px rgba(201,168,76,0.65));
+    }
+    @keyframes trophy-anim {
+      from { transform: translateY(0) rotate(-4deg) scale(1); }
+      to   { transform: translateY(-18px) rotate(4deg) scale(1.06); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── TÍTULO ── */
+    .parabens {
+      font-size: clamp(2.2rem, 7vw, 3.5rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -0.5px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .parabens span {
+      display: block;
+      background: linear-gradient(90deg, #B8960C, #E5C46A, #C9A84C, #E5C46A, #B8960C);
+      background-size: 200% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer-text 3s linear infinite;
+    }
+    @keyframes shimmer-text {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── CARD DO PRÊMIO ── */
+    .prize-card {
+      position: relative; width: 100%;
+      border-radius: 24px; padding: 2px;
+      background: linear-gradient(135deg, #C9A84C, #6B5420, #C9A84C);
+      animation: fadeUp 0.6s 0.2s ease both, card-glow 2.8s ease-in-out infinite alternate;
+    }
+    @keyframes card-glow {
+      from { box-shadow: 0 0 20px rgba(201,168,76,0.2); }
+      to   { box-shadow: 0 0 70px rgba(201,168,76,0.5); }
+    }
+    .prize-inner {
+      background: linear-gradient(135deg, #1A1500, #1C1C1C, #141000);
+      border-radius: 22px; padding: 36px 32px;
+      position: relative; overflow: hidden;
+    }
+    .prize-inner::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 40%;
+      background: linear-gradient(180deg, rgba(201,168,76,0.06), transparent);
+      border-radius: 22px 22px 0 0;
+    }
+    .prize-label {
+      font-size: 0.72rem; color: rgba(255,255,255,0.35);
+      text-transform: uppercase; letter-spacing: 2.5px;
+      margin-bottom: 14px; position: relative;
+    }
+    .prize-value {
+      font-size: clamp(2.2rem, 7vw, 3.6rem);
+      font-weight: 800; color: var(--gold);
+      line-height: 1; position: relative;
+      text-shadow: 0 0 40px rgba(201,168,76,0.45);
+    }
+    .prize-desc {
+      font-size: 0.88rem; color: rgba(255,255,255,0.38);
+      margin-top: 12px; position: relative;
+    }
+
+    /* ── FRASE ── */
+    .frase-section {
+      width: 100%; padding: 16px 22px;
+      border-left: 3px solid var(--gold);
+      background: rgba(201,168,76,0.04);
+      border-radius: 0 12px 12px 0; text-align: left;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .frase-label {
+      font-size: 0.68rem; color: rgba(255,255,255,0.35);
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px;
+    }
+    .frase-text {
+      font-style: italic; color: var(--gold-light);
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      font-weight: 600; line-height: 1.5;
+    }
+
+    /* ── INSTRUÇÃO PARA ATENDENTE ── */
+    .atendente-box {
+      width: 100%;
+      background: rgba(201,168,76,0.06);
+      border: 1px dashed rgba(201,168,76,0.35);
+      border-radius: 16px;
+      padding: 20px 24px;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+    .atendente-box .icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .atendente-box h3 {
+      font-size: 1rem; font-weight: 700;
+      color: var(--gold-light); margin-bottom: 4px;
+    }
+    .atendente-box p {
+      font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.6;
+    }
+
+    /* ── BOTÃO NOVA RODADA ── */
+    .btn-nova-rodada {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%;
+      background: transparent;
+      color: var(--gold);
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+      font-weight: 700;
+      padding: 18px 24px;
+      border: 2px solid var(--gold);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.2s, box-shadow 0.2s;
+      animation: fadeUp 0.6s 0.5s ease both;
+    }
+    .btn-nova-rodada:hover {
+      background: var(--gold);
+      color: var(--dark);
+      transform: scale(1.03) translateY(-2px);
+      box-shadow: 0 10px 32px rgba(201,168,76,0.4);
+    }
+    .btn-nova-rodada:active { transform: scale(0.97); }
+
+    footer {
+      margin-top: auto; padding: 14px;
+      color: rgba(255,255,255,0.15); font-size: 0.7rem;
+      text-align: center; border-top: 1px solid rgba(201,168,76,0.08); width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="../PNG - SITE.png" alt="Óticas Zayne" class="logo">
+  <span class="modo-loja">🏪 Modo Loja</span>
+</header>
+
+<div class="content">
+  <div class="trophy">🏆</div>
+
+  <h1 class="parabens">
+    Parabéns!<span>Você Ganhou!</span>
+  </h1>
+
+  <div class="prize-card">
+    <div class="prize-inner">
+      <div class="prize-label">✦ Prêmio conquistado ✦</div>
+      <div class="prize-value" id="prizeValue">—</div>
+      <div class="prize-desc">válido à vista ou no cartão · Óticas Zayne</div>
+    </div>
+  </div>
+
+  <div class="frase-section">
+    <div class="frase-label">Frase da sua mãe 💛</div>
+    <div class="frase-text" id="fraseTexto">—</div>
+  </div>
+
+  <div class="atendente-box">
+    <div class="icon">👩‍💼</div>
+    <h3>Atenção, atendente</h3>
+    <p>Aplicar o desconto acima na compra do cliente.<br>
+       Válido à vista ou no cartão. Não cumulativo com outras promoções.</p>
+  </div>
+
+  <button class="btn-nova-rodada" id="btnNovaRodada">
+    🔄 Nova Rodada — Próximo Cliente
+  </button>
+</div>
+
+<footer>
+  Óticas Zayne · Modo Loja · Dia das Mães 2026<br>
+  <span style="opacity:.55">*Descontos válidos para pagamentos à vista ou no cartão. Não cumulativo com outras promoções.</span>
+</footer>
+
+<script>
+  const premio = sessionStorage.getItem('loja2_premio');
+  const frase  = sessionStorage.getItem('loja2_frase');
+  if (!premio || !frase) { window.location.href = '/loja-02/index.html'; }
+
+  document.getElementById('prizeValue').textContent = premio;
+  document.getElementById('fraseTexto').textContent = `"${frase}"`;
+
+  /* Nova Rodada — limpa tudo e volta ao início */
+  document.getElementById('btnNovaRodada').addEventListener('click', () => {
+    sessionStorage.removeItem('loja2_frase');
+    sessionStorage.removeItem('loja2_premio');
+    sessionStorage.removeItem('loja2_jaGirou');
+    window.location.href = '/loja-02/index.html';
+  });
+
+  /* Confetti */
+  const colors = ['#C9A84C','#E5C46A','#FFFFFF','#FFD700','#FFF8DC'];
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      confetti({ particleCount: 140, spread: 75, origin: { y: 0.4 }, colors });
+      setTimeout(() => {
+        confetti({ particleCount: 80, angle: 60,  spread: 65, origin: { x: 0, y: 0.55 }, colors });
+        confetti({ particleCount: 80, angle: 120, spread: 65, origin: { x: 1, y: 0.55 }, colors });
+      }, 350);
+    }, 250);
+  });
+</script>
+
+</body>
+</html>

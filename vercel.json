@@ -2,8 +2,11 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "routes": [
-    { "src": "/loja",         "dest": "/loja/index.html" },
-    { "src": "/loja/roleta",  "dest": "/loja/roleta.html" },
-    { "src": "/loja/premio",  "dest": "/loja/premio.html" }
+    { "src": "/loja",            "dest": "/loja/index.html" },
+    { "src": "/loja/roleta",     "dest": "/loja/roleta.html" },
+    { "src": "/loja/premio",     "dest": "/loja/premio.html" },
+    { "src": "/loja-02",         "dest": "/loja-02/index.html" },
+    { "src": "/loja-02/roleta",  "dest": "/loja-02/roleta.html" },
+    { "src": "/loja-02/premio",  "dest": "/loja-02/premio.html" }
   ]
 }
