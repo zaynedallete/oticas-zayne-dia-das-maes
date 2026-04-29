@@ -241,8 +241,8 @@
 </footer>
 
 <script>
-  const premio = sessionStorage.getItem('premio');
-  const frase  = sessionStorage.getItem('frase');
+  const premio = sessionStorage.getItem('loja_premio');
+  const frase  = sessionStorage.getItem('loja_frase');
   if (!premio || !frase) { window.location.href = 'index.html'; }
 
   document.getElementById('prizeValue').textContent = premio;
@@ -250,9 +250,9 @@
 
   /* Nova Rodada — limpa tudo e volta ao início */
   document.getElementById('btnNovaRodada').addEventListener('click', () => {
-    sessionStorage.removeItem('frase');
-    sessionStorage.removeItem('premio');
-    sessionStorage.removeItem('jaGirou');
+    sessionStorage.removeItem('loja_frase');
+    sessionStorage.removeItem('loja_premio');
+    sessionStorage.removeItem('loja_jaGirou');
     window.location.href = 'index.html';
   });
 

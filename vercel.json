@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "routes": [
+    { "src": "/loja",         "dest": "/loja/index.html" },
+    { "src": "/loja/roleta",  "dest": "/loja/roleta.html" },
+    { "src": "/loja/premio",  "dest": "/loja/premio.html" }
+  ]
+}

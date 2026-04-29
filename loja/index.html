@@ -228,10 +228,10 @@
 </footer>
 
 <script>
-  // Limpa sessão anterior ao voltar para início
-  sessionStorage.removeItem('frase');
-  sessionStorage.removeItem('premio');
-  sessionStorage.removeItem('jaGirou');
+  // Limpa sessão do modo loja (chaves prefixadas para não conflitar com site principal)
+  sessionStorage.removeItem('loja_frase');
+  sessionStorage.removeItem('loja_premio');
+  sessionStorage.removeItem('loja_jaGirou');
 
   const FRASES = [
     ['😤','Você não é todo mundo…'],
@@ -263,7 +263,7 @@
       <span class="card-emoji">${emoji}</span>
       <span class="card-text">${texto}</span>`;
     btn.addEventListener('click', () => {
-      sessionStorage.setItem('frase', texto);
+      sessionStorage.setItem('loja_frase', texto);
       window.location.href = 'roleta.html';
     });
     grid.appendChild(btn);

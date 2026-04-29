@@ -228,9 +228,9 @@
 </footer>
 
 <script>
-  const frase = sessionStorage.getItem('frase');
+  const frase = sessionStorage.getItem('loja_frase');
   if (!frase) { window.location.href = 'index.html'; }
-  if (sessionStorage.getItem('jaGirou')) { window.location.href = 'premio.html'; }
+  if (sessionStorage.getItem('loja_jaGirou')) { window.location.href = 'premio.html'; }
 
   document.getElementById('fraseExibida').textContent = frase;
 
@@ -321,8 +321,8 @@
       if (t < 1) { requestAnimationFrame(animate); }
       else {
         currentAngle = endAngle; drawWheel(currentAngle);
-        sessionStorage.setItem('premio', PREMIOS[winner].full);
-        sessionStorage.setItem('jaGirou', '1');
+        sessionStorage.setItem('loja_premio', PREMIOS[winner].full);
+        sessionStorage.setItem('loja_jaGirou', '1');
         setTimeout(() => { window.location.href = 'premio.html'; }, 1400);
       }
     }
