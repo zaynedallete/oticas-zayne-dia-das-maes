@@ -229,8 +229,8 @@
 
 <script>
   const frase = sessionStorage.getItem('loja_frase');
-  if (!frase) { window.location.href = 'index.html'; }
-  if (sessionStorage.getItem('loja_jaGirou')) { window.location.href = 'premio.html'; }
+  if (!frase) { window.location.href = '/loja/index.html'; }
+  if (sessionStorage.getItem('loja_jaGirou')) { window.location.href = '/loja/premio.html'; }
 
   document.getElementById('fraseExibida').textContent = frase;
 
@@ -323,7 +323,7 @@
         currentAngle = endAngle; drawWheel(currentAngle);
         sessionStorage.setItem('loja_premio', PREMIOS[winner].full);
         sessionStorage.setItem('loja_jaGirou', '1');
-        setTimeout(() => { window.location.href = 'premio.html'; }, 1400);
+        setTimeout(() => { window.location.href = '/loja/premio.html'; }, 1400);
       }
     }
     requestAnimationFrame(animate);
