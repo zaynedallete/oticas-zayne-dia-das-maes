@@ -336,7 +336,10 @@
   </a>
 </div>
 
-<footer>Óticas Zayne · Dia das Mães 2026 · Promoção válida nas lojas participantes</footer>
+<footer>
+  Óticas Zayne · Dia das Mães 2026 · Promoção válida nas lojas participantes<br>
+  <span style="opacity:.55">*Descontos válidos para pagamentos à vista ou no cartão. Não cumulativo com outras promoções. Sujeito à disponibilidade.</span>
+</footer>
 
 <script>
   /* ── GUARD ── */
@@ -347,9 +350,8 @@
   if (!premio || !frase || !lojaWhatsapp) { window.location.href = 'index.html'; }
 
   /* ── PRÊMIO ── */
-  const partes = premio.split(' em ');
-  document.getElementById('prizeValue').textContent = partes[0] || premio;
-  document.getElementById('prizeDesc').textContent  = partes[1] ? `em ${partes[1]}` : '';
+  document.getElementById('prizeValue').textContent = premio;
+  document.getElementById('prizeDesc').textContent  = 'válido à vista ou no cartão · Óticas Zayne';
 
   /* ── FRASE ── */
   document.getElementById('fraseTexto').textContent = `"${frase}"`;
